@@ -1,0 +1,11 @@
+streamlit
+streamlit-webrtc
+opencv-python-headless
+mysql-connector-python
+pyngrok
+av
+pyaudio
+schedule
+pytz
+pygame
+numpy
