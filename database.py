@@ -50,6 +50,18 @@ def create_tables(db_conn):
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        # Create messages table for chat
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS messages (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                sender VARCHAR(50),
+                receiver VARCHAR(50),
+                content TEXT,
+                audio_data LONGBLOB,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
         
         db_conn.commit()
         return True, "✅ Tables created successfully!"

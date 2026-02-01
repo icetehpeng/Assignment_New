@@ -14,19 +14,27 @@ class AudioSystem:
         
     def record_audio(self, duration=5):
         """Record audio for specified duration"""
+        return self._record_internal(duration, self.sample_rate)
+
+    def record_optimized(self, duration=5):
+        """Record audio at lower sample rate (16kHz) for chat/storage efficiency"""
+        return self._record_internal(duration, 16000)
+
+    def _record_internal(self, duration, rate):
+        """Internal recording logic"""
         try:
             p = pyaudio.PyAudio()
             
             stream = p.open(
                 format=pyaudio.paInt16,
                 channels=self.channels,
-                rate=self.sample_rate,
+                rate=rate,
                 input=True,
                 frames_per_buffer=self.chunk
             )
             
             frames = []
-            for _ in range(0, int(self.sample_rate / self.chunk * duration)):
+            for _ in range(0, int(rate / self.chunk * duration)):
                 data = stream.read(self.chunk)
                 frames.append(data)
             
@@ -39,7 +47,7 @@ class AudioSystem:
             with wave.open(wav_buffer, 'wb') as wf:
                 wf.setnchannels(self.channels)
                 wf.setsampwidth(2)
-                wf.setframerate(self.sample_rate)
+                wf.setframerate(rate)
                 wf.writeframes(b''.join(frames))
             
             wav_buffer.seek(0)
