@@ -8,7 +8,13 @@ import cv2
 import threading
 import time
 import base64
-from fall_detector import FallDetector
+import sys
+from pathlib import Path
+
+# Add src directory to path so we can import core modules
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from core.fall_detector import FallDetector
 
 app = Flask(__name__)
 
