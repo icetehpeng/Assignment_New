@@ -2,6 +2,10 @@
 Unified Settings Manager
 Combines all settings-related features into a single module
 """
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import streamlit as st
 from datetime import datetime
 from typing import Dict, Optional

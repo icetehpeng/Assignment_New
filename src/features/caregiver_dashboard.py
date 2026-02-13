@@ -1,6 +1,15 @@
 import streamlit as st
 from datetime import datetime, timedelta
+import sys
+from pathlib import Path
+
+# Add src directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from config import TIMEZONE
+from core.vital_signs import VitalSignsTracker
+from core.activity_recognition import ActivityRecognition
+from core.medication_manager import MedicationManager
 
 class CaregiverDashboard:
     def __init__(self, db_conn, db_available):
@@ -124,20 +133,17 @@ class CaregiverDashboard:
         alerts = []
         
         # Check for abnormal vitals
-        from vital_signs import VitalSignsTracker
         vital_tracker = VitalSignsTracker(self.db_conn, self.db_available)
         abnormal = vital_tracker.check_abnormal_readings(username)
         alerts.extend([{"type": "vital", "message": f"Abnormal {a['vital']}: {a['value']}"} for a in abnormal])
         
         # Check for inactivity
-        from activity_recognition import ActivityRecognition
         activity = ActivityRecognition(self.db_conn, self.db_available)
         inactivity = activity.detect_unusual_inactivity(username)
         if inactivity.get("inactive"):
             alerts.append({"type": "activity", "message": inactivity.get("alert", "Unusual inactivity")})
         
         # Check for medication refills
-        from medication_manager import MedicationManager
         med_manager = MedicationManager(self.db_conn, self.db_available)
         refills = med_manager.check_refill_needed(username)
         alerts.extend([{"type": "medication", "message": f"Refill needed: {r['medication']}"} for r in refills])
