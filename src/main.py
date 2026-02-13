@@ -35,6 +35,7 @@ from utils.error_logger import ErrorLogger
 from utils.rate_limiter import RateLimiter
 from ui.theme_manager import ThemeManager
 from ui.dashboard_customizer import DashboardCustomizer
+from ui.ui_video_monitor import show_video_monitor
 from utils.report_generator import ReportGenerator
 from utils.language_manager import LanguageManager
 from utils.offline_sync_manager import OfflineSyncManager
@@ -506,6 +507,10 @@ else:
                         st.session_state.audio_system.play_audio(st.session_state.last_audio_message)
                 else:
                     st.info("No recordings")
+    
+    # ------------------ FLASK VIDEO MONITOR PAGE ------------------
+    elif st.session_state.current_page == "📹 Flask Video":
+        show_video_monitor()
     
     # ------------------ CHAT PAGE ------------------
     elif st.session_state.current_page == "💬 Chat":
@@ -1064,7 +1069,7 @@ else:
     
     # Collect all pages
     all_pages = {
-        "🔍 MONITOR": ["🏠 Home", "🎥 CCTV"],
+        "🔍 MONITOR": ["🏠 Home", "🎥 CCTV", "📹 Flask Video"],
         "💬 COMMUNICATE": ["🎤 Intercom", "💬 Chat", "📢 Announce"],
         "❤️ HEALTH": ["❤️ Vital Signs", "💊 Medications", "😊 Mood & Mental"],
         "🍽️ LIFESTYLE": ["🍽️ Nutrition", "🚶 Activity"],
